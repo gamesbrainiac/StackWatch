@@ -5,11 +5,15 @@ from websocket import create_connection
 
 
 class TestQuestion(TestCase):
+    """
+    A set of regression tests for StackObjects.Question.
+    """
 
     def setUp(self):
         """
         - Creating socket data file
         - Creating connection for use
+        - Test is carried out using new python tags only
         """
         with open('Tests/socket_data.json') as f:
             sd = f.read()
@@ -28,6 +32,9 @@ class TestQuestion(TestCase):
         q = Question.from_socket_json(data)
         assert q is not None
         assert isinstance(q, Question)
+
+        assert q.name is not None
+        assert int(q.id)
 
     def test_dupe_questions(self):
         """
@@ -53,7 +60,14 @@ class TestQuestion(TestCase):
         q = Question.from_socket_json(self.sd)
         print q
 
+    def test_url(self):
+        q = Question.from_socket_json(self.sd)
+        assert q.url is not None
+
     # def test_random_data_json_loading(self):
     #     for x in range(3):
     #         data = self.conn.recv()
     #         self.test_json_loading(data)
+
+    def tearDown(self):
+        self.conn.close()
