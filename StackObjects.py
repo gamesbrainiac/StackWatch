@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 
 class StackObject(object):
 
-    __base_url = 'http://stackoverflow.com'
+    _BASE_URL = 'http://stackoverflow.com'
 
 
 class User(StackObject):
@@ -22,7 +22,7 @@ class User(StackObject):
 
     @CachedProperty
     def url(self):
-        return "{}/users/{}".format(self.__class__.__base_url, self._id)
+        return "{}/users/{}".format(self.__class__._BASE_URL, self._id)
 
     def __repr__(self):
         return "<{}>{{{}}}".format(self.name, self._id)
@@ -75,7 +75,7 @@ class Question(StackObject):
 
     @CachedProperty
     def url(self):
-        return "{}/{}".format(self.__class__.__base_url, self.id)
+        return "{}/{}".format(self.__class__._BASE_URL, self.id)
 
     @classmethod
     def from_socket_json(cls, ws_json_string):
@@ -95,7 +95,7 @@ class Question(StackObject):
         # Getting data from info['body']
         body_soup = BeautifulSoup(info['body'])
         question_name = body_soup.find(
-            attrs={'class': 'question-summary'}).text
+            attrs={'class': 'question-hyperlink'}).text
         cr_name = body_soup.find(
             attrs={'class': 'user-details'}).find('a').text
         cr_id = int(body_soup.find(
@@ -103,6 +103,10 @@ class Question(StackObject):
 
         # Finally creating class
         return cls(id_num=id_num, name=question_name, tags=tags, creator=(cr_name, cr_id))
+
+    def __repr__(self):
+        # THIS IS SUBJECT TO CHANGE
+        return str((self.name, self.tags, self.url, self.creator))
 
     def __eq__(self, other):
         return self.id == other.id
