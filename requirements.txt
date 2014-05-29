@@ -3,6 +3,7 @@ backports.ssl-match-hostname==3.4.0.2
 beautifulsoup4==4.3.2
 bipython==0.1.2
 bpython==0.13
+coverage==3.7.1
 gnureadline==6.3.3
 ipython==2.1.0
 Pygments==1.6

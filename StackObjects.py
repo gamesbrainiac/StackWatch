@@ -56,6 +56,7 @@ class Question(StackObject):
         "webstorm": 15,
         "list": 15,
         "beautifulsoup": 12,
+        "while-loop": 10,
         "phpstorm": 10,
         "multiprocessing": 10,
         "django": 5,
@@ -71,7 +72,11 @@ class Question(StackObject):
     @CachedProperty
     def weight(self):
         wts = self.__class__._weights
-        return sum(wts[t] for t in self.tags)
+        # Not very good complexity
+        return sum(wts[t] for t in self.tags if t in wts)
+
+    def __hash__(self):
+        return self.id
 
     @CachedProperty
     def url(self):
