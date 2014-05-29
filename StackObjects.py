@@ -110,8 +110,11 @@ class Question(StackObject):
         return cls(id_num=id_num, name=question_name, tags=tags, creator=(cr_name, cr_id))
 
     def __repr__(self):
-        # THIS IS SUBJECT TO CHANGE
-        return str((self.name, self.tags, self.url, self.creator))
+        return "<{question_name}> - {tags} - {creator} -> {url}".format(
+            question_name=self.name,
+            creator=self.creator.name,
+            url=self.url, tags=list(self.tags)
+        )
 
     def __eq__(self, other):
         return self.id == other.id

@@ -7,7 +7,10 @@ from websocket import create_connection
 class TestQuestion(TestCase):
 
     def setUp(self):
-        """Creating socket data file"""
+        """
+        - Creating socket data file
+        - Creating connection for use
+        """
         with open('Tests/socket_data.json') as f:
             sd = f.read()
             self.sd = sd
@@ -17,12 +20,20 @@ class TestQuestion(TestCase):
         self.conn = conn
 
     def test_json_loading(self, data=None):
+        """
+        Testing from_socket_json classmethod.
+        """
         data = data or self.sd
+        assert isinstance(data, str) or isinstance(data, unicode)
         q = Question.from_socket_json(data)
         assert q is not None
         assert isinstance(q, Question)
 
     def test_dupe_questions(self):
+        """
+        Testing to see whether multiple questions with the same ID
+        is being added. Essentially, testing __hash__
+        """
         qs = []
         for i in range(10):
             qs.append(Question.from_socket_json(self.sd))
@@ -30,10 +41,17 @@ class TestQuestion(TestCase):
         assert len(Question.__questions__) != len(qs)
 
     def test_init_testing(self):
+        """
+        Testing __init__ function
+        """
         try:
             q = Question('this is not supposed to work')
         except TypeError as e:
             pass
+
+    def test_repr(self):
+        q = Question.from_socket_json(self.sd)
+        print q
 
     # def test_random_data_json_loading(self):
     #     for x in range(3):
