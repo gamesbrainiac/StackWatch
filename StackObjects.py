@@ -151,10 +151,12 @@ class Question(StackObject):
         return cls(id_num=id_num, name=question_name, tags=tags, creator=(cr_name, cr_id))
 
     def __repr__(self):
-        return "<{question_name}> - {tags} - {creator} -> {url}".format(
+        return "<{question_name}> - {tags}|{weight} - {creator} -> {url}".format(
             question_name=self.name,
             creator=self.creator.name,
-            url=self.url, tags=list(self.tags)
+            url=self.url,
+            tags=list(self.tags),
+            weight=self.weight
         )
 
     def __eq__(self, other):

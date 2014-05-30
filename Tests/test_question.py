@@ -20,16 +20,16 @@ class TestQuestion(TestCase):
             sd = f.read()
             self.sd = sd
 
-        conn = create_connection('wss://qa.sockets.stackexchange.com')
-        conn.send('1-questions-newest-python')
-        self.conn = conn
+        # conn = create_connection('wss://qa.sockets.stackexchange.com')
+        # conn.send('1-questions-newest-python')
+        # self.conn = conn
 
     def test_json_loading(self, data=None):
         """
         Testing from_socket_json classmethod.
         """
         data = data or self.sd
-        assert isinstance(data, str) or isinstance(data, unicode)
+        assert isinstance(data, (str, unicode))
         q = Question.from_socket_json(data)
         assert q is not None
         assert isinstance(q, Question)
@@ -92,4 +92,5 @@ class TestQuestion(TestCase):
             pass
 
     def tearDown(self):
-        self.conn.close()
+        pass
+        # self.conn.close()
