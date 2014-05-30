@@ -12,20 +12,30 @@ class WrongDataFormatException(Exception):
 
 
 class StackObject(object):
-
     _BASE_URL = 'http://stackoverflow.com'
 
 
 class User(StackObject):
     """
     Object that represents a stackoverflow user
+
+    :param name: Name of the user
+    :type name: str|unicode
+
+    :param uid: User ID on StackOverflow
+    :type uid: int
     """
+
     def __init__(self, name, uid):
         self.name = name
         self._id = uid
 
     @CachedProperty
     def url(self):
+        """
+        :return: The URL for the user's profile page on StackOverflow
+        :rtype: str
+        """
         return "{}/users/{}".format(self.__class__._BASE_URL, self._id)
 
     def __repr__(self):
@@ -97,7 +107,6 @@ class Question(StackObject):
 
     @classmethod
     def from_socket_json(cls, ws_json_string):
-        # Turning retrieved information into dictionary
         """
         A classmethod which creates a Question object wrapper for
         StackOverflow questions.
