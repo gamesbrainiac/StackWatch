@@ -1,6 +1,7 @@
+import json
 from unittest import TestCase
 
-from StackObjects import Question
+from StackObjects import Question, WrongDataFormatException
 from websocket import create_connection
 
 
@@ -64,10 +65,19 @@ class TestQuestion(TestCase):
         q = Question.from_socket_json(self.sd)
         assert q.url is not None
 
-    # def test_random_data_json_loading(self):
-    #     for x in range(3):
-    #         data = self.conn.recv()
-    #         self.test_json_loading(data)
+    def test_wrong_json_data(self):
+        test_dict = {
+            "something": 1,
+            "data": "cakes",
+            "happy": "noodles",
+            "action": "Nothing here"
+        }
+
+        info = json.dumps(test_dict)
+        try:
+            self.test_json_loading(info)
+        except WrongDataFormatException as e:
+            pass
 
     def tearDown(self):
         self.conn.close()

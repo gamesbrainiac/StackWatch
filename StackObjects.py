@@ -7,6 +7,10 @@ from utils import CachedProperty
 from bs4 import BeautifulSoup
 
 
+class WrongDataFormatException(Exception):
+    pass
+
+
 class StackObject(object):
 
     _BASE_URL = 'http://stackoverflow.com'
@@ -47,6 +51,7 @@ class Question(StackObject):
     """
     __questions__ = set()
     _slash_remover_regex = re.compile(r'\+[nr]?')
+    _action_test_regex = re.compile(r'1-questions-newest-tag-\w+')
     _weights = {
         "python": 15,
         "python-2.7": 15,
@@ -71,6 +76,10 @@ class Question(StackObject):
 
     @CachedProperty
     def weight(self):
+        """
+        :return: The sum of all the weights of the question's tags
+        :rtype: int
+        """
         wts = self.__class__._weights
         # Not very good complexity
         return sum(wts[t] for t in self.tags if t in wts)
@@ -80,19 +89,27 @@ class Question(StackObject):
 
     @CachedProperty
     def url(self):
+        """
+        :return: Returns the stackoverflow url of a question
+        :rtype: str
+        """
         return "{}/{}".format(self.__class__._BASE_URL, self.id)
 
     @classmethod
     def from_socket_json(cls, ws_json_string):
         # Turning retrieved information into dictionary
-        info = json.loads(
-            json.loads(
+        info = json.loads(ws_json_string)
+        try:
+            if cls._action_test_regex.match(info['action']):
                 # data contains all the information we need,
                 # there are two keys, ``action`` and ``data``
                 # the regex removes all the ``\\`` and ``\n`` or ``\r``
                 # inside the string
-                cls._slash_remover_regex.sub('', ws_json_string))['data']
-        )
+                info = json.loads(cls._slash_remover_regex.sub('', info['data']))
+            else:
+                raise WrongDataFormatException("Wrong socket data format. Incorrect ``action`` format in JSON object.")
+        except KeyError:
+            raise
 
         id_num = int(info['id'])
         tags = set(info['tags'])
