@@ -34,8 +34,15 @@ class TestQuestion(TestCase):
         assert q is not None
         assert isinstance(q, Question)
 
+        # This needs to be taken somewhere else, because
+        # this tests the User class
         assert q.name is not None
         assert int(q.id)
+        assert q.weight > 0
+        assert q.weight < 1000
+        assert q.creator.name is not None
+        assert q.creator.url is not None
+        print q.creator
 
     def test_dupe_questions(self):
         """
@@ -43,7 +50,7 @@ class TestQuestion(TestCase):
         is being added. Essentially, testing __hash__
         """
         qs = []
-        for i in range(10):
+        for i in range(5):
             qs.append(Question.from_socket_json(self.sd))
         assert len(Question.__questions__) == 1
         assert len(Question.__questions__) != len(qs)
@@ -77,6 +84,11 @@ class TestQuestion(TestCase):
         try:
             self.test_json_loading(info)
         except WrongDataFormatException as e:
+            pass
+
+        try:
+            info = self.test_json_loading(data='{"stuff": "yolo!"}')
+        except KeyError:
             pass
 
     def tearDown(self):

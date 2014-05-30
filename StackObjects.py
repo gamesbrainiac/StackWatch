@@ -98,6 +98,18 @@ class Question(StackObject):
     @classmethod
     def from_socket_json(cls, ws_json_string):
         # Turning retrieved information into dictionary
+        """
+        A classmethod which creates a Question object wrapper for
+        StackOverflow questions.
+
+        :param ws_json_string: JSON string from web socket
+        :type ws_json_string: str|unicode
+
+        :return: A Question Object
+        :rtype: Question
+
+        :raise WrongDataFormatException: Websocket returned the wrong JSON string
+        """
         info = json.loads(ws_json_string)
         try:
             if cls._action_test_regex.match(info['action']):
