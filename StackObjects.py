@@ -6,7 +6,7 @@ import json
 
 import re
 
-from utils import CachedProperty
+from utils import CachedProperty, LockedSet
 from bs4 import BeautifulSoup
 
 
@@ -62,7 +62,7 @@ class Question(StackObject):
     :param tags: A set of all the associated tags
     :type tags: set
     """
-    __questions__ = set()
+    __questions__ = LockedSet()
     _slash_remover_regex = re.compile(r'\+[nr]?')
     _action_test_regex = re.compile(r'1-questions-newest-tag-\w+')
     _weights = {
@@ -106,7 +106,7 @@ class Question(StackObject):
         :return: Returns the stackoverflow url of a question
         :rtype: str
         """
-        return "{}/{}".format(self.__class__._BASE_URL, self.id)
+        return "{}/questions/{}".format(self.__class__._BASE_URL, self.id)
 
     @classmethod
     def from_socket_json(cls, ws_json_string):

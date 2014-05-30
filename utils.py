@@ -1,4 +1,5 @@
 # encoding=utf-8
+from threading import Lock
 
 
 class CachedProperty(object):
@@ -19,3 +20,18 @@ class CachedProperty(object):
             return self
         value = obj.__dict__[self.func.__name__] = self.func(obj)
         return value
+
+
+class LockedSet(set):
+
+    def __init__(self):
+        self._lock = Lock()
+        super(LockedSet, self).__init__()
+
+    def add(self, elem):
+        with self._lock:
+            super(LockedSet, self).add(elem)
+
+    def remove(self, elem):
+        with self._lock:
+            super(LockedSet, self).remove(elem)

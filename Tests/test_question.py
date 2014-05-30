@@ -2,7 +2,6 @@ import json
 from unittest import TestCase
 
 from StackObjects import Question, WrongDataFormatException
-from websocket import create_connection
 
 
 class TestQuestion(TestCase):
@@ -50,10 +49,11 @@ class TestQuestion(TestCase):
         is being added. Essentially, testing __hash__
         """
         qs = []
-        for i in range(5):
+        for i in range(100):
             qs.append(Question.from_socket_json(self.sd))
         assert len(Question.__questions__) == 1
         assert len(Question.__questions__) != len(qs)
+        print Question.__questions__
 
     def test_init_testing(self):
         """
