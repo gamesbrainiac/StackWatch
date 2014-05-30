@@ -1,4 +1,7 @@
 # encoding=utf-8
+"""
+Object Wrapper for StackOverflow Questions and Users. Also houses module's object specific exceptions.
+"""
 import json
 
 import re
@@ -63,7 +66,7 @@ class Question(StackObject):
     _slash_remover_regex = re.compile(r'\+[nr]?')
     _action_test_regex = re.compile(r'1-questions-newest-tag-\w+')
     _weights = {
-        "python": 15,
+        "python": 20,
         "python-2.7": 15,
         "python-3.x": 15,
         "decorator": 15,
