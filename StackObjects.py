@@ -103,7 +103,7 @@ class Question(StackObject):
     @CachedProperty
     def url(self):
         """
-        :return: Returns the stackoverflow url of a question
+        :return: Returns the StackOverflow url of a question
         :rtype: str
         """
         return "{}/questions/{}".format(self.__class__._BASE_URL, self.id)
