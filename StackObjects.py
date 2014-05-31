@@ -154,7 +154,7 @@ class Question(StackObject):
         return cls(id_num=id_num, name=question_name, tags=tags, creator=(cr_name, cr_id))
 
     def __repr__(self):
-        return u"<{question_name}> - {tags}|{weight} - {creator} -> {url}".format(
+        return "<{question_name}> - {tags}|{weight} - {creator} -> {url}".format(
             question_name=self.name,
             creator=self.creator.name,
             url=self.url,
@@ -184,4 +184,3 @@ class StackTagWatcher(Thread):
                 Question.from_socket_json(data)
             except WrongDataFormatException as e:
                 logging.log(logging.ERROR, e)
-                logging.log(logging.ERROR, [e[d] for d in dir(e)])
