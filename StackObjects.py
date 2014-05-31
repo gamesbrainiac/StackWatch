@@ -3,8 +3,11 @@
 Object Wrapper for StackOverflow Questions and Users. Also houses module's object specific exceptions.
 """
 import json
+import logging
 
 import re
+from threading import Thread
+from websocket import create_connection
 
 from utils import CachedProperty, LockedSet
 from bs4 import BeautifulSoup
@@ -161,3 +164,24 @@ class Question(StackObject):
 
     def __eq__(self, other):
         return self.id == other.id
+
+
+class StackTagWatcher(Thread):
+
+    def __init__(self, tag, *args, **kwargs):
+        super(StackTagWatcher, self).__init__()
+        self._socket_message = '1-questions-newest-tag-{}'
+        self.tag = tag
+        self.daemon = True
+
+    def run(self):
+        conn = create_connection('wss://qa.sockets.stackexchange.com')
+        conn.send(self._socket_message.format(self.tag))
+        while True:
+            logging.log(logging.INFO, "{} started".format(self.tag))
+            data = conn.recv()
+            try:
+                Question.from_socket_json(data)
+            except WrongDataFormatException as e:
+                logging.log(logging.ERROR, e)
+                logging.log(logging.ERROR, [e[d] for d in dir(e)])

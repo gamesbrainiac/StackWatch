@@ -1,7 +1,7 @@
 import json
 from unittest import TestCase
 
-from StackObjects import Question, DataFormatError
+from StackObjects import Question, WrongDataFormatException
 
 
 class TestQuestion(TestCase):
@@ -48,9 +48,7 @@ class TestQuestion(TestCase):
         Testing to see whether multiple questions with the same ID
         is being added. Essentially, testing __hash__
         """
-        qs = []
-        for i in range(100):
-            qs.append(Question.from_socket_json(self.sd))
+        qs = [Question.from_socket_json(self.sd) for i in xrange(100)]
         assert len(Question.__questions__) == 1
         assert len(Question.__questions__) != len(qs)
         print Question.__questions__
@@ -83,7 +81,7 @@ class TestQuestion(TestCase):
         info = json.dumps(test_dict)
         try:
             self.test_json_loading(info)
-        except DataFormatError as e:
+        except WrongDataFormatException as e:
             pass
 
         try:
