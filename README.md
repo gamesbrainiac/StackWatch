@@ -9,6 +9,10 @@ In order to use the program:
 
     python watcher.py
 
+Before that, make sure you have all the requirements installed:
+
+    pip install -r requirements.txt
+
 Note, that as of now, you need to set your own weights. And this can be done by modifying the `_weights` dict inside
 of `StackObjects.Question`.
 
