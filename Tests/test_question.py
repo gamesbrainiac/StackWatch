@@ -1,7 +1,7 @@
 import json
 from unittest import TestCase
 
-from StackObjects import Question, WrongDataFormatException
+from StackObjects import Question, DataFormatError
 
 
 class TestQuestion(TestCase):
@@ -83,7 +83,7 @@ class TestQuestion(TestCase):
         info = json.dumps(test_dict)
         try:
             self.test_json_loading(info)
-        except WrongDataFormatException as e:
+        except DataFormatError as e:
             pass
 
         try:

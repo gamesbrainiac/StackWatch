@@ -38,6 +38,7 @@ class StackTagWatcher(Thread):
                 Question.from_socket_json(data)
             except WrongDataFormatException as e:
                 logging.log(logging.ERROR, e)
+                logging.log(logging.ERROR, [e[d] for d in dir(e)])
 
 
 if __name__ == '__main__':
@@ -51,8 +52,7 @@ if __name__ == '__main__':
 
     for v in questions():
         if v:
-            print('\n\a')
-            for q in v:
+            for q in reversed(sorted(v, key=lambda x: x.weight)):
                 print(q)
         else:
             pass
