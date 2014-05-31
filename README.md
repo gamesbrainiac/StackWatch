@@ -30,6 +30,6 @@ Or you can simply pass in your own arguments:
 Plans
 -----
 
- - Make a better `watcher.py` that takes in tags are parameters.
  - Make a console UI
  - Make a web UI (probably using flask or Pyramid)
+ - Add a time stamp to question class
