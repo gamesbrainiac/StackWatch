@@ -12,13 +12,16 @@ In order to use the program:
 Note, that as of now, you need to set your own weights. And this can be done by modifying the `_weights` dict inside
 of `StackObjects.Question`.
 
-The tags that are being watched is configured in `watcher.py`. Right now there are plans to include arguments being
-accepted into `watcher.py`, and there will also be a set of default arguments. To change tags in `watcher.py` simply
+The tags that are being watched is configured in `watcher.py`. To change tags in `watcher.py` simply
 add or remove a tag from the list:
 
     ...
     tags = 'python ruby django c c++ java php scala javascript'.split()
     ...
+
+Or you can simply pass in your own arguments:
+
+    python watcher.py node javascript python django scala coffeescript
 
 Plans
 -----

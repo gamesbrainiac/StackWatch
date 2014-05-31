@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import sys
 import logging
 from threading import Thread
 
@@ -40,7 +41,9 @@ class StackTagWatcher(Thread):
 
 
 if __name__ == '__main__':
-    tags = 'python ruby django c c++ java php scala javascript'.split()
+    default_tags = 'python django scala javascript'.split()
+
+    tags = sys.argv[1:] or default_tags
 
     for t in tags:
         print(t, 'started')

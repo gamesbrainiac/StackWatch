@@ -20,7 +20,7 @@ class StackObject(object):
 
 class User(StackObject):
     """
-    Object that represents a stackoverflow user
+    Object that represents a StackOverflow user
 
     :param name: Name of the user
     :type name: str|unicode
