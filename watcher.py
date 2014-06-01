@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import sys
+import time
 
 from StackObjects import Question, StackTagWatcher
 
@@ -30,4 +31,4 @@ if __name__ == '__main__':
             for q in reversed(sorted(v, key=lambda x: x.weight)):
                 print(q)
         else:
-            pass
+            time.sleep(0.5)
