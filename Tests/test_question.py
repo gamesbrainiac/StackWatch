@@ -1,7 +1,8 @@
+# encoding=utf-8
 import json
 from unittest import TestCase
 
-from StackObjects import Question, WrongDataFormatException
+from StackObjects import Question, WrongDataFormatException, User
 
 
 class TestQuestion(TestCase):
@@ -39,19 +40,20 @@ class TestQuestion(TestCase):
         assert int(q.id)
         assert q.weight > 0
         assert q.weight < 1000
+        assert isinstance(q.creator, User)
         assert q.creator.name is not None
         assert q.creator.url is not None
-        print q.creator
+        print(q.creator)
 
     def test_dupe_questions(self):
         """
         Testing to see whether multiple questions with the same ID
         is being added. Essentially, testing __hash__
         """
-        qs = [Question.from_socket_json(self.sd) for i in xrange(100)]
+        qs = [Question.from_socket_json(self.sd) for _ in xrange(10)]
         assert len(Question.__questions__) == 1
         assert len(Question.__questions__) != len(qs)
-        print Question.__questions__
+        # print Question.__questions__
 
     def test_init_testing(self):
         """
@@ -64,13 +66,17 @@ class TestQuestion(TestCase):
 
     def test_repr(self):
         q = Question.from_socket_json(self.sd)
-        print q
+        print(q)
 
     def test_url(self):
         q = Question.from_socket_json(self.sd)
         assert q.url is not None
 
     def test_wrong_json_data(self):
+        """
+        Giving from_socket_json wrong data, one that has incorrect variable inside correct keys, the other has the
+        wrong dict all together
+        """
         test_dict = {
             "something": 1,
             "data": "cakes",
@@ -81,7 +87,7 @@ class TestQuestion(TestCase):
         info = json.dumps(test_dict)
         try:
             self.test_json_loading(info)
-        except WrongDataFormatException as e:
+        except WrongDataFormatException:
             pass
 
         try:
@@ -91,4 +97,3 @@ class TestQuestion(TestCase):
 
     def tearDown(self):
         pass
-        # self.conn.close()

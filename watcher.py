@@ -1,5 +1,4 @@
-from __future__ import print_function
-
+# encoding=utf-8
 import sys
 import time
 
@@ -18,7 +17,7 @@ def questions():
 
 
 if __name__ == '__main__':
-    default_tags = 'python django scala javascript'.split()
+    default_tags = 'python regex nodejs javascript php java c scala csharp algorithm while-loop list dict'.split()
 
     tags = sys.argv[1:] or default_tags
 
@@ -29,6 +28,8 @@ if __name__ == '__main__':
     for v in questions():
         if v:
             for q in reversed(sorted(v, key=lambda x: x.weight)):
+                if q.weight > 0:
+                    print '\a'
                 print(q)
         else:
             time.sleep(0.5)

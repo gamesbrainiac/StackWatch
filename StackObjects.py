@@ -153,14 +153,14 @@ class Question(StackObject):
         # Finally creating class
         return cls(id_num=id_num, name=question_name, tags=tags, creator=(cr_name, cr_id))
 
-    def __repr__(self):
-        return u"<{question_name}> - {tags}|{weight} - {creator} -> {url}".format(
+    def __str__(self):
+        return u"{weight} -> {url} \n <{question_name}> \n {tags} \n {creator}".format(
             question_name=self.name,
             creator=self.creator.name,
             url=self.url,
             tags=list(self.tags),
             weight=self.weight
-        )
+        ).encode('utf-8')
 
     def __eq__(self, other):
         return self.id == other.id
@@ -182,5 +182,5 @@ class StackTagWatcher(Thread):
             data = conn.recv()
             try:
                 Question.from_socket_json(data)
-            except WrongDataFormatException as e:
-                logging.log(logging.ERROR, e)
+            except WrongDataFormatException:
+                pass
