@@ -1,6 +1,7 @@
 # encoding=utf-8
 import sys
 import time
+import os
 
 from StackObjects import Question, StackTagWatcher
 
@@ -27,6 +28,7 @@ if __name__ == '__main__':
 
     for v in questions():
         if v:
+            os.system('clear')
             for q in reversed(sorted(v, key=lambda x: x.weight)):
                 if q.weight > 0:
                     print '\a'

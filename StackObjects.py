@@ -167,8 +167,13 @@ class Question(StackObject):
 
 
 class StackTagWatcher(Thread):
+    """
+    A wrapper over the Thread object that listens to a StackOverflow web-socket.
 
-    def __init__(self, tag, *args, **kwargs):
+    :param tag: The StackOverflow question tag to be watched.
+    :type tag: str
+    """
+    def __init__(self, tag):
         super(StackTagWatcher, self).__init__()
         self._socket_message = '1-questions-newest-tag-{}'
         self.tag = tag
